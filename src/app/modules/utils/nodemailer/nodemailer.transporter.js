@@ -6,12 +6,12 @@ const transport = nodemailer.createTransport({
   secure: false,
   requireTLS: true,
   auth: {
-    user: process.env.AUTH_EMAIL,
-    pass: process.env.AUTH_PASSWORD,
+    user: "salmanshah11062019@gmail.com",
+    pass: "qdzowfvjtzhknaqr",
   },
   tls: {
     ciphers: "SSLv3",
   },
 });
 
-export default transport;
+module.exports = transport;
