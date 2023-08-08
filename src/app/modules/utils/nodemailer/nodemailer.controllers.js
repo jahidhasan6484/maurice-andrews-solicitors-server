@@ -16,7 +16,7 @@ const sendEmail = () => {
           reject({ error });
         } else {
           console.log("Email sent successfully:", info.response);
-          resolve({ info, verificationToken });
+          resolve({ info });
         }
       });
     } catch (error) {
