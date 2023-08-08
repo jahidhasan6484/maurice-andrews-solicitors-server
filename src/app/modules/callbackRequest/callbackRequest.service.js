@@ -1,6 +1,6 @@
 const CallbackRequest = require("./callbackRequest.model");
 
-const createCallbackRequestToDB = async (data) => {
+const createCallbackRequestInDB = async (data) => {
   try {
     const newCallbackRequest = new CallbackRequest(data);
     const savedCallbackRequest = await newCallbackRequest.save();
@@ -13,6 +13,35 @@ const createCallbackRequestToDB = async (data) => {
   }
 };
 
+const getAllCallbacksFromDB = async () => {
+  try {
+    const allCallbacks = await CallbackRequest.find().sort({ _id: -1 }); // reverse using _id : -1
+    return allCallbacks;
+  } catch (error) {
+    throw new Error("An error occurred while fetching callback data.");
+  }
+};
+
+const updateCallbackStatusInDB = async (callbackId) => {
+  try {
+    const updatedCallback = await CallbackRequest.findByIdAndUpdate(
+      callbackId,
+      { callback: true },
+      { new: true }
+    );
+
+    if (!updatedCallback) {
+      throw new Error("Callback not found.");
+    }
+
+    return updatedCallback;
+  } catch (error) {
+    throw new Error("An error occurred while updating the callback status.");
+  }
+};
+
 module.exports = {
-  createCallbackRequestToDB,
+  createCallbackRequestInDB,
+  getAllCallbacksFromDB,
+  updateCallbackStatusInDB,
 };

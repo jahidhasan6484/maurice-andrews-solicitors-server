@@ -14,4 +14,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1/callback", callbackRequestRoutes);
 // app.use("/api/v1/email", sendEmail);
 
+app.use((req, res) => {
+  res.status(404).json({ error: "API route not found." });
+});
+
 module.exports = app;
