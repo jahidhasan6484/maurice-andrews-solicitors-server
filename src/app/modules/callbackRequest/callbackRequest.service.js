@@ -40,8 +40,54 @@ const updateCallbackStatusInDB = async (callbackId) => {
   }
 };
 
+const getTodaysCallbackListFromDB = async () => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const todayCallbacks = await CallbackRequest.find({
+      callback_date: {
+        $gte: today,
+        $lt: tomorrow,
+      },
+    });
+
+    const filteredCallbacks = todayCallbacks.filter((callback) => {
+      const callbackDateWithoutTime = new Date(callback.callback_date);
+      callbackDateWithoutTime.setHours(0, 0, 0, 0);
+      return callbackDateWithoutTime.getTime() === today.getTime();
+    });
+
+    return filteredCallbacks;
+  } catch (error) {
+    throw new Error(
+      "An error occurred while fetching today's callback requests."
+    );
+  }
+};
+
+const getUpcomingCallbackListFromDB = async () => {
+  try {
+    const currentDate = new Date();
+
+    const upcomingCallbacks = await CallbackRequest.find({
+      callback_date: { $gt: currentDate },
+    }).sort({ callback_date: 1 });
+
+    return upcomingCallbacks;
+  } catch (error) {
+    throw new Error(
+      "An error occurred while fetching upcoming callback requests."
+    );
+  }
+};
+
 module.exports = {
   createCallbackRequestInDB,
   getAllCallbacksFromDB,
   updateCallbackStatusInDB,
+  getTodaysCallbackListFromDB,
+  getUpcomingCallbackListFromDB,
 };

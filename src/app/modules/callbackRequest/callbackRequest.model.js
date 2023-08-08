@@ -15,6 +15,7 @@ const callbackSchema = new mongoose.Schema(
     callback_date: {
       type: Date,
       required: true,
+      default: Date.now(),
     },
     preferred_time: {
       type: String,

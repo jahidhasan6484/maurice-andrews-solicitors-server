@@ -3,6 +3,8 @@ const {
   createCallbackRequestInDB,
   getAllCallbacksFromDB,
   updateCallbackStatusInDB,
+  getTodaysCallbackListFromDB,
+  getUpcomingCallbackListFromDB,
 } = require("./callbackRequest.service");
 const mongoose = require("mongoose");
 
@@ -74,8 +76,38 @@ const updateStatus = async (req, res) => {
   }
 };
 
+const getTodaysCallbackList = async (req, res) => {
+  try {
+    const todayCallbacks = await getTodaysCallbackListFromDB();
+
+    res.status(200).json({
+      data: todayCallbacks,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "An error occurred while fetching today's callback requests.",
+    });
+  }
+};
+
+const getUpcomingCallbacksList = async (req, res) => {
+  try {
+    const upcomingCallbacks = await getUpcomingCallbackListFromDB();
+
+    res.status(200).json({
+      data: upcomingCallbacks,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "An error occurred while fetching upcoming callback requests.",
+    });
+  }
+};
+
 module.exports = {
   createCallbackRequest,
   getAllCallbacks,
   updateStatus,
+  getTodaysCallbackList,
+  getUpcomingCallbacksList,
 };
